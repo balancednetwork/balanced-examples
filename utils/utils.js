@@ -22,6 +22,8 @@ async function getPoolsStat(id) {
 
 async function customAxiosRequest(data) {
   try {
+    console.log("Request:");
+    console.log(JSON.stringify(data));
     const response = await axios.post(ENDPOINT, data);
     return response.data;
   } catch (err) {
