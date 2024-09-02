@@ -1,0 +1,40 @@
+# Balanced Network Examples
+
+This repo is a collection of code samples to showcase how to execute different operations on the Balanced Network.
+
+## Prerequisites
+
+To be able to run the code samples, first clone the repo and then install the required dependencies:
+
+```bash
+git clone
+cd balanced-network-examples
+npm install
+```
+
+The sample scripts can run in both testnet and mainnet environments. To switch between the two, set the `NETWORK` environment variable to either `testnet` or `mainnet` (default is `testnet`).
+
+For this create a `.env` file in the root of the project and add the following line:
+
+```bash
+NETWORK=testnet
+```
+
+Also setup a `PRIVATE_KEY` environment variable in the `.env` file with the private key of the account you want to use to sign transactions.
+
+```bash
+NETWORK=testnet
+PRIVATE_KEY=0x...
+```
+
+If no private key is provided, the scripts that require signing transactions will fail.
+
+## Scripts
+
+The following scripts are available:
+
+- [Query a pool price](./scripts/query-pool-price.js)
+- [Make ICON-ICON swap](./scripts/make-icon-icon-swap.js)
+- [Make ICON-SPOKE swap](./scripts/make-icon-spoke-swap.js)
+- [Make SPOKE-ICON swap](./scripts/make-spoke-icon-swap.js)
+- [Make SPOKE-SPOKE swap](./scripts/make-spoke-spoke-swap.js)

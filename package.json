@@ -1,0 +1,24 @@
+{
+  "name": "balanced-network-examples",
+  "version": "1.0.0",
+  "description": "examples of how to programatically interact with balanced network",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "balanced",
+    "network",
+    "defi",
+    "icon",
+    "crypto"
+  ],
+  "author": "fidelve",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "eslint": "^9.9.1",
+    "globals": "^15.9.0",
+    "prettier": "^3.3.3"
+  }
+}
