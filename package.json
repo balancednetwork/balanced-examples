@@ -24,6 +24,7 @@
   "dependencies": {
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
-    "icon-sdk-js": "^1.5.2"
+    "icon-sdk-js": "^1.5.2",
+    "rlp": "^3.0.0"
   }
 }
