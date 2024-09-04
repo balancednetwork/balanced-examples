@@ -7,7 +7,7 @@ This repo is a collection of code samples to showcase how to execute different o
 To be able to run the code samples, first clone the repo and then install the required dependencies:
 
 ```bash
-git clone
+git clone https://github.com/balancednetwork/balanced-network-examples.git
 cd balanced-network-examples
 npm install
 ```
