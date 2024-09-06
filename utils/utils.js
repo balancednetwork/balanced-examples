@@ -142,7 +142,11 @@ function getBytesFromAddress(address) {
   // f8 is hardcoded, it will be replaced after rlp encoded, because rlp package doesn't support encoding null.
   //  rlpEncodedDataStr = rlpEncodedDataStr.replaceAll('c30181f8', 'c301f800');
 
-  return Buffer.from(address.replace("cx", "01") ?? "f8", "hex");
+  // return Buffer.from(address.replace("cx", "01") ?? "f8", "hex");
+  return Buffer.from(
+    address == null ? "f8" : address.replace("cx", "01"),
+    "hex",
+  );
 }
 
 function getRlpEncodedMsg(msg) {
