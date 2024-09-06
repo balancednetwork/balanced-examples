@@ -62,6 +62,8 @@ async function icxTransaction(
     }
 
     const txObj2 = txObj.build();
+    console.log("Request:");
+    console.log(txObj2);
     const signedTransaction = new SignedTransaction(txObj2, wallet);
     const txHash =
       await ICON_SERVICE.sendTransaction(signedTransaction).execute();
@@ -147,6 +149,29 @@ function getRlpEncodedMsg(msg) {
   return Array.from(RLP.encode(msg));
 }
 
+function getRlpEncodedSwapData(swapDataArray) {
+  const parsedSwapData = swapDataArray.map((item) => {
+    if (Array.isArray(item)) {
+      return [getBytesFromNumber(item[0]), getBytesFromAddress(item[1])];
+    } else {
+      if (typeof item === "string") {
+        return Buffer.from(item, "utf-8");
+      } else if (typeof item === "number") {
+        return Buffer.from(item.toString(16), "hex");
+      } else {
+        throw new Error(
+          'Error encoding swap data: invalid type "' + item + '"',
+        );
+      }
+    }
+  });
+
+  const rlpEncodedData = Buffer.from(getRlpEncodedMsg(parsedSwapData));
+  let rlpEncodedDataStr = rlpEncodedData.toString("hex");
+  rlpEncodedDataStr = rlpEncodedDataStr.replaceAll("c30181f8", "c301f800");
+  return rlpEncodedDataStr;
+}
+
 function encodePathArray(path) {
   const parsedPath = path.map((item) => {
     return [getBytesFromNumber(item[0]), getBytesFromAddress(item[1])];
@@ -160,9 +185,82 @@ function encodePathArray(path) {
   return customRlpEncodedDataHex;
 }
 
+function bufferToString(buffer) {
+  return buffer.toString("utf8");
+}
+
+function bufferToHex(buffer) {
+  return buffer.toString("hex");
+}
+
+function getNumberFromBytes(bytes) {
+  return parseInt(bytes.toString("hex"), 16);
+}
+
+function getAddressFromBytes(bytes) {
+  const str = bytes.toString("hex");
+  return str == "f8" ? null : "cx" + str.substring(2);
+}
+
+function decodeRlpEncodedSwapData(encodedSwapData) {
+  const str2 = encodedSwapData.replaceAll("c301f800", "c30181f8");
+  const dataBuffer = Buffer.from(str2, "hex");
+  const result = RLP.decode(dataBuffer);
+  if (result.length == 0) {
+    console.log("Empty");
+    return;
+  } else {
+    const decodedAll = [];
+
+    const encodedComponents = [];
+    const encodedRoute = [];
+
+    result.forEach((eachItem) => {
+      // if the item is an array then is a path and
+      // should be added to encodedRoute
+      if (Array.isArray(eachItem)) {
+        encodedRoute.push(eachItem);
+      } else {
+        encodedComponents.push(eachItem);
+      }
+    });
+    // decoded the components
+    const decodedComponents = encodedComponents.map((item) => {
+      //
+      if (Buffer.isBuffer(item)) {
+        const a = bufferToString(item);
+        const re = /[\x00-\x1F\x7F-\xFF]/.test(a) ? bufferToHex(item) : a;
+        return re;
+      } else if (Array.isArray(item)) {
+        return item.map((subItem) => {
+          return Buffer.isBuffer(subItem)
+            ? /[\x00-\x1F\x7F-\xFF]/.test(bufferToString(subItem))
+              ? bufferToHex(subItem)
+              : bufferToString(subItem)
+            : subItem;
+        });
+      }
+    });
+    decodedComponents.forEach((item) => {
+      decodedAll.push(item);
+    });
+
+    // decode the route
+    encodedRoute.forEach((arr) => {
+      decodedAll.push([
+        getNumberFromBytes(arr[0]),
+        getAddressFromBytes(arr[1]),
+      ]);
+    });
+    return decodedAll;
+  }
+}
+
 module.exports = {
   getPoolsStat,
   encodePathArray,
   icxTransaction,
   getTxResult,
+  decodeRlpEncodedSwapData,
+  getRlpEncodedSwapData,
 };
