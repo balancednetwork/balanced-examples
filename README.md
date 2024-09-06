@@ -34,7 +34,9 @@ If no private key is provided, the scripts that require signing transactions wil
 The following scripts are available:
 
 - [Query a pool price](./scripts/query-pool-price.js)
-- [Make ICON-ICON swap](./scripts/make-icon-icon-swap.js)
+- [Make ICON-ICON swap (ICX to TOKEN)](./scripts/make-icon-icon-swap.js)
+- [Make ICON-ICON swap (TOKEN to TOKEN)](./scripts/make-icon-icon-swap-2.js)
+- [Make ICON-ICON swap (TOKEN to ICX)](./scripts/make-icon-icon-swap-3.js)
 - [Make ICON-SPOKE swap](./scripts/make-icon-spoke-swap.js)
 - [Make SPOKE-ICON swap](./scripts/make-spoke-icon-swap.js)
 - [Make SPOKE-SPOKE swap](./scripts/make-spoke-spoke-swap.js)
