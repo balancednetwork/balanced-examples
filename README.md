@@ -40,3 +40,9 @@ The following scripts are available:
 - (NOT IMPLEMENTED YET)[Make ICON-SPOKE swap](./scripts/make-icon-spoke-swap.js)
 - (NOT IMPLEMENTED YET)[Make SPOKE-ICON swap](./scripts/make-spoke-icon-swap.js)
 - (NOT IMPLEMENTED YET)[Make SPOKE-SPOKE swap](./scripts/make-spoke-spoke-swap.js)
+
+
+## References
+- [Balanced Network](https://balanced.network/)
+- [Balanced Network Docs](https://docs.balanced.network/)
+- [Balanced Network Contracts Addresses](https://github.com/balancednetwork/balanced-java-contracts/wiki/Contract-Addresses)
