@@ -49,8 +49,8 @@ async function main() {
 
     // trade path
     const tradePath = [
-      [1, "cx2d013cb55781fb54b81d629aa4b611be2daec564"],
-      [1, "cx87f7f8ceaa054d46ba7343a2ecd21208e12913c6"],
+      [1, pool1Data.result.base_token],
+      [1, pool2Data.result.quote_token],
     ];
     const encodedPath = encodePathArray(tradePath);
 
