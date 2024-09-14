@@ -1,4 +1,6 @@
 const config = require("./config");
+const { Web3 } = require("web3");
+const { ethers } = require("ethers");
 const RLP = require("rlp");
 const axios = require("axios");
 const IconService = require("icon-sdk-js");
@@ -15,6 +17,11 @@ const ENDPOINT = config.network.icon[config.useNetwork].rpc;
 const ICON_PROVIDER = new HttpProvider(ENDPOINT);
 const ICON_SERVICE = new IconService.default(ICON_PROVIDER);
 const ICON_WALLET = IconWallet.loadPrivateKey(config.privateKey);
+
+const EVM_PROVIDER = new ethers.JsonRpcProvider(
+  config.network.evm1[config.useNetwork].rpc,
+);
+const EVM_SIGNER = new ethers.Wallet("0x" + config.privateKey, EVM_PROVIDER);
 
 async function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -72,6 +79,38 @@ async function icxTransaction(
     console.log("Error sending ICX");
     console.log(err);
     throw new Error("Error sending ICX");
+  }
+}
+
+async function getNonce() {
+  try {
+    const data = getJsonRpcData(
+      config.network.icon[config.useNetwork].contracts.dex,
+      "getNonce",
+      null,
+    );
+    const response = await customAxiosRequest(data);
+    if (response.error) {
+      throw new Error(JSON.stringify(response.error));
+    }
+    return response;
+  } catch (err) {
+    console.log("error running getNonce");
+    console.log(err);
+  }
+}
+
+async function getTokenSymbol(contract) {
+  try {
+    const data = getJsonRpcData(contract, "symbol", null);
+    const response = await customAxiosRequest(data);
+    if (response.error) {
+      throw new Error(JSON.stringify(response.error));
+    }
+    return response;
+  } catch (err) {
+    console.log("error running getTokenSymbol");
+    console.log(err);
   }
 }
 
@@ -260,6 +299,98 @@ function decodeRlpEncodedSwapData(encodedSwapData) {
   }
 }
 
+function getContractObjectEvm(abi, address, signer = EVM_SIGNER) {
+  try {
+    const contract = new ethers.Contract(address, abi, signer);
+    return contract;
+  } catch (err) {
+    console.log("Error getting contract object:");
+    console.log(err);
+    throw new Error("Error Getting contract Object");
+  }
+}
+
+async function sendSignedTxEvm(
+  contract,
+  method,
+  value = null,
+  simulate = false,
+  ...params
+) {
+  try {
+    const txParams = {
+      gasPrice: ethers.parseUnits("50", "gwei"),
+      gasLimit: 10000000,
+    };
+
+    if (value != null) {
+      txParams.value = value;
+    }
+    console.log("params");
+    console.log(params);
+
+    console.log("txParams");
+    console.log(txParams);
+
+    if (simulate == true) {
+      const gas = await contract[method].estimateGas(...params);
+      console.log("gas");
+      console.log(gas);
+      return;
+    }
+    const tx = await contract[method](...params, txParams);
+    const txWaited = await tx.wait(1);
+
+    return {
+      txHash: tx.hash,
+      txObj: txWaited,
+    };
+  } catch (err) {
+    return {
+      txHash: null,
+      txObj: null,
+      error: err,
+    };
+  }
+}
+
+async function depositNativeEvm(amount, to, data, value, simulate = false) {
+  try {
+    const contract = getContractObjectEvm(
+      config.abi.assetManager,
+      config.network.evm1[config.useNetwork].contracts.asset_manager,
+    );
+
+    return await sendSignedTxEvm(
+      contract,
+      "depositNative(uint256,string,bytes)",
+      value,
+      simulate,
+      amount,
+      to,
+      data,
+    );
+  } catch (err) {
+    console.log("Error invoking depositNative method on EVM chain:");
+    console.log(err);
+    throw new Error("Error invoking depositNative method on EVM chain");
+  }
+}
+
+function getMethodSignaturesFromAbi(abi) {
+  const methods = abi.filter((item) => item.type === "function");
+  const signatures = methods.map((item) => {
+    return {
+      abi: { ...item },
+      name: item.name,
+      signature: ethers
+        .id(item.name + "(" + item.inputs.map((i) => i.type).join(",") + ")")
+        .substring(0, 10),
+    };
+  });
+  return signatures;
+}
+
 module.exports = {
   getPoolsStat,
   encodePathArray,
@@ -267,4 +398,10 @@ module.exports = {
   getTxResult,
   decodeRlpEncodedSwapData,
   getRlpEncodedSwapData,
+  getNonce,
+  getTokenSymbol,
+  getContractObjectEvm,
+  sendSignedTxEvm,
+  depositNativeEvm,
+  getMethodSignaturesFromAbi,
 };
