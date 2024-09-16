@@ -53,30 +53,30 @@ async function main() {
     const receiver = `${config.network.evm3[config.useNetwork].xnid}/${evmWallet.address}`;
 
     // amount to trade
-    const amountRaw = 0.01;
+    const amountRaw = 0.1;
     const amount = amountRaw + parsedFee;
     const parsedAmountRaw = parseInt(amountRaw * 10 ** 18);
     const parsedAmount = parseInt(amount * 10 ** 18);
 
     // slippage of 5%
-    const slippage = 0.01;
+    const slippage = 0.05;
 
     // fetch the current price for the AVAX/bnUSD pool
-    // and BNB/bnUSD pool
+    // and ETH/bnUSD pool
     const pool1Data = await getPoolsStat("0x46");
     const pool2Data = await getPoolsStat("0x3b");
 
-    const bnbAmount =
-      (amount * (parseInt(pool1Data.result.price, 16) / 10 ** 18)) /
+    const tokenBAmount =
+      (amountRaw * (parseInt(pool1Data.result.price, 16) / 10 ** 18)) /
       (parseInt(pool2Data.result.price, 16) / 10 ** 18);
 
-    const minBnbAmount = bnbAmount - bnbAmount * slippage;
-    const minBnbAmountInLoop = parseInt(minBnbAmount * 10 ** 18);
+    const minTokenBAmount = tokenBAmount - tokenBAmount * slippage;
+    const minTokenBAmountInLoop = parseInt(minTokenBAmount * 10 ** 18);
 
     const data = [
       "_swap",
       receiver,
-      minBnbAmountInLoop.toString(16),
+      minTokenBAmountInLoop.toString(16),
       [1, pool1Data.result.quote_token],
       [1, pool2Data.result.base_token],
     ];
