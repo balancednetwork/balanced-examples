@@ -90,6 +90,30 @@ const config = {
         },
       },
     },
+    evm3: {
+      mainnet: {
+        name: "base",
+        rpc: "",
+        nid: "",
+        xnid: "0x2105.base",
+        contracts: {
+          asset_manager: "0xDccd213951D8214fBACa720728474E2cEf9d247B",
+          xcall: "0x7fdde482956770D148E055f9d2893f84a1B6B00B",
+          xcall_manager: "0xbcbd42Ab3c9d219b9c992Cc984DD2a77AfD95EF3",
+        },
+      },
+      testnet: {
+        name: "",
+        rpc: "",
+        nid: "",
+        xnid: "",
+        contracts: {
+          asset_manager: "",
+          xcall: "",
+          xcall_manager: "",
+        },
+      },
+    },
   },
   abi: {
     assetManager: assetManagerAbi,
