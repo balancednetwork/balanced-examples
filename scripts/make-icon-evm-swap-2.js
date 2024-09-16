@@ -3,9 +3,7 @@
 // The example is for a swap from BALN to bnUSD token with
 // origin on the ICON network and destination on the EVM
 //
-// const IconService = require("icon-sdk-js");
 const { Web3 } = require("web3");
-// const { IconWallet } = IconService.default;
 const config = require("../utils/config");
 const {
   getRlpEncodedSwapData,
@@ -22,7 +20,6 @@ async function main() {
     const evmProvider = new Web3(config.network.evm1[config.useNetwork].rpc);
 
     // get wallet instance
-    // const wallet = IconWallet.loadPrivateKey(privateKey);
     const evmWallet = evmProvider.eth.accounts.privateKeyToAccount(
       "0x" + privateKey,
     );

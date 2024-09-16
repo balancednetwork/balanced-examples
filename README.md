@@ -37,7 +37,7 @@ The following scripts are available:
 - [Make ICON-ICON swap (ICX to TOKEN)](./scripts/make-icon-icon-swap.js)
 - [Make ICON-ICON swap (TOKEN to TOKEN)](./scripts/make-icon-icon-swap-2.js)
 - [Make ICON-ICON swap (TOKEN to ICX)](./scripts/make-icon-icon-swap-3.js)
-- (NOT IMPLEMENTED YET)[Make ICON-SPOKE swap](./scripts/make-icon-spoke-swap.js)
+- (NOT IMPLEMENTED YET)[Make ICON-SPOKE swap (ICX to NATIVE on SPOKE)](./scripts/make-icon-evm-swap.js)
 - (NOT IMPLEMENTED YET)[Make SPOKE-ICON swap](./scripts/make-spoke-icon-swap.js)
 - (NOT IMPLEMENTED YET)[Make SPOKE-SPOKE swap](./scripts/make-spoke-spoke-swap.js)
 
@@ -46,3 +46,4 @@ The following scripts are available:
 - [Balanced Network](https://balanced.network/)
 - [Balanced Network Docs](https://docs.balanced.network/)
 - [Balanced Network Contracts Addresses](https://github.com/balancednetwork/balanced-java-contracts/wiki/Contract-Addresses)
+- [xCall Contracts Addresses](https://github.com/icon-project/xcall-multi/wiki/xCall-Deployment-Info)
