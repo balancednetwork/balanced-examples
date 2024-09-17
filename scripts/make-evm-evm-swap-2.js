@@ -40,7 +40,8 @@ async function main() {
       "0x1",
       sources,
     );
-    const parsedFee = Number(ethers.formatUnits(response, "ether"));
+    // const parsedFee = Number(ethers.formatUnits(response, "ether"));
+    const parsedFee = Number(response) / 10 ** 18;
     if (Number.isNaN(parsedFee)) {
       throw new Error("Failed to parse fee");
     }
@@ -59,20 +60,32 @@ async function main() {
     const parsedAmount = parseInt(amount * 10 ** 18);
 
     // slippage of 5%
-    const slippage = 0.05;
+    const slippage = 0.02;
 
     // fetch the current price for the AVAX/bnUSD pool
     // and ETH/bnUSD pool
     const pool1Data = await getPoolsStat("0x46");
     const pool2Data = await getPoolsStat("0x3b");
+    const pool1Price = parseInt(pool1Data.result.price, 16) / 10 ** 18;
+    const pool2Price = parseInt(pool2Data.result.price, 16) / 10 ** 18;
 
-    const tokenBAmount =
-      (amountRaw * (parseInt(pool1Data.result.price, 16) / 10 ** 18)) /
-      (parseInt(pool2Data.result.price, 16) / 10 ** 18);
+    const tokenBAmount = (amountRaw * pool1Price) / pool2Price;
 
     const minTokenBAmount = tokenBAmount - tokenBAmount * slippage;
     const minTokenBAmountInLoop = parseInt(minTokenBAmount * 10 ** 18);
 
+    // console.log(response);
+    // console.log(parsedFee);
+    // console.log(amountRaw);
+    // console.log(amount);
+    // console.log(parsedAmountRaw);
+    // console.log(parsedAmount);
+    // console.log(pool1Price);
+    // console.log(pool2Price);
+    // console.log(tokenBAmount);
+    // console.log(minTokenBAmount);
+    // console.log(minTokenBAmountInLoop);
+    // throw new Error("stop");
     const data = [
       "_swap",
       receiver,
