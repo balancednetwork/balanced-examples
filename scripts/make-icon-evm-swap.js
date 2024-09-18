@@ -27,7 +27,7 @@ async function main() {
     const receiver = `${config.network.evm1[config.useNetwork].xnid}/${evmWallet.address}`;
 
     // amount to trade
-    const amount = 300;
+    const amount = 10;
 
     // slippage of 5%
     const slippage = 0.05;
