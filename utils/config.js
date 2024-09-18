@@ -75,7 +75,7 @@ const config = {
         contracts: {
           asset_manager: "0x69e81Cea7889608A63947814893ad1B86DcC03Aa",
           xcall: "0xfc83a3f252090b26f92f91dfb9dc3eb710adaf1b",
-          xcallManager: "0x8B3873e46b3923c15B7aAF1f4774585a908de226",
+          xcall_manager: "0x8B3873e46b3923c15B7aAF1f4774585a908de226",
         },
       },
       testnet: {
@@ -86,14 +86,14 @@ const config = {
         contracts: {
           asset_manager: "0x82E46886e1302Ed73dB89CA8A9ea8a4a18dC8c77",
           xcall: "0xD59C71E42a1Fc070e4c2c94f0eAE0840043681D0",
-          xcallManager: "0x0d85A1B9f7982091A5C8bD56Af81fB4d2f0D50d5",
+          xcall_manager: "0x0d85A1B9f7982091A5C8bD56Af81fB4d2f0D50d5",
         },
       },
     },
     evm3: {
       mainnet: {
         name: "base",
-        rpc: "",
+        rpc: "https://mainnet.base.org/",
         nid: "",
         xnid: "0x2105.base",
         contracts: {
