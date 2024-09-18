@@ -40,7 +40,6 @@ async function main() {
       "0x1",
       sources,
     );
-    // const parsedFee = Number(ethers.formatUnits(response, "ether"));
     const parsedFee = Number(response) / 10 ** 18;
     if (Number.isNaN(parsedFee)) {
       throw new Error("Failed to parse fee");
@@ -55,7 +54,9 @@ async function main() {
 
     // amount to trade
     const amountRaw = 0.1;
-    const amount = amountRaw + parsedFee;
+    let amount = amountRaw + parsedFee;
+    amount = Number(amount.toFixed(4));
+
     const parsedAmountRaw = parseInt(amountRaw * 10 ** 18);
     const parsedAmount = parseInt(amount * 10 ** 18);
 
@@ -74,22 +75,10 @@ async function main() {
     const minTokenBAmount = tokenBAmount - tokenBAmount * slippage;
     const minTokenBAmountInLoop = parseInt(minTokenBAmount * 10 ** 18);
 
-    // console.log(response);
-    // console.log(parsedFee);
-    // console.log(amountRaw);
-    // console.log(amount);
-    // console.log(parsedAmountRaw);
-    // console.log(parsedAmount);
-    // console.log(pool1Price);
-    // console.log(pool2Price);
-    // console.log(tokenBAmount);
-    // console.log(minTokenBAmount);
-    // console.log(minTokenBAmountInLoop);
-    // throw new Error("stop");
     const data = [
       "_swap",
       receiver,
-      minTokenBAmountInLoop.toString(16),
+      minTokenBAmountInLoop,
       [1, pool1Data.result.quote_token],
       [1, pool2Data.result.base_token],
     ];
