@@ -11,7 +11,6 @@ const {
   depositNativeEvm,
   getContractObjectEvm,
 } = require("../utils/utils");
-const { ethers } = require("ethers");
 
 async function main() {
   try {
@@ -40,7 +39,7 @@ async function main() {
       "0x1",
       sources,
     );
-    const parsedFee = Number(ethers.formatUnits(response, "ether"));
+    const parsedFee = Number(response) / 10 ** 18;
     if (Number.isNaN(parsedFee)) {
       throw new Error("Failed to parse fee");
     }
@@ -54,29 +53,31 @@ async function main() {
 
     // amount to trade
     const amountRaw = 0.01;
-    const amount = amountRaw + parsedFee;
+    let amount = amountRaw + parsedFee;
+    amount = Number(amount.toFixed(4));
+
     const parsedAmountRaw = parseInt(amountRaw * 10 ** 18);
     const parsedAmount = parseInt(amount * 10 ** 18);
 
     // slippage of 5%
-    const slippage = 0.01;
+    const slippage = 0.02;
 
     // fetch the current price for the AVAX/bnUSD pool
     // and BNB/bnUSD pool
     const pool1Data = await getPoolsStat("0x46");
     const pool2Data = await getPoolsStat("0x47");
+    const pool1Price = parseInt(pool1Data.result.price, 16) / 10 ** 18;
+    const pool2Price = parseInt(pool2Data.result.price, 16) / 10 ** 18;
 
-    const bnbAmount =
-      (amount * (parseInt(pool1Data.result.price, 16) / 10 ** 18)) /
-      (parseInt(pool2Data.result.price, 16) / 10 ** 18);
+    const tokenBAmount = (amountRaw * pool1Price) / pool2Price;
 
-    const minBnbAmount = bnbAmount - bnbAmount * slippage;
-    const minBnbAmountInLoop = parseInt(minBnbAmount * 10 ** 18);
+    const minTokenBAmount = tokenBAmount - tokenBAmount * slippage;
+    const minTokenBAmountInLoop = parseInt(minTokenBAmount * 10 ** 18);
 
     const data = [
       "_swap",
       receiver,
-      minBnbAmountInLoop.toString(16),
+      minTokenBAmountInLoop,
       [1, pool1Data.result.quote_token],
       [1, pool2Data.result.base_token],
     ];
@@ -93,6 +94,9 @@ async function main() {
       routerReceiver,
       "0x" + encodedData,
       "0x" + parsedAmount.toString(16),
+      false,
+      null,
+      { gasLimit: 1200000 },
     );
 
     console.log("Transaction result:");
