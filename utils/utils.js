@@ -1,5 +1,4 @@
 const config = require("./config");
-const { Web3 } = require("web3");
 const { ethers } = require("ethers");
 const RLP = require("rlp");
 const axios = require("axios");
@@ -272,12 +271,14 @@ function decodeRlpEncodedSwapData(encodedSwapData) {
       //
       if (Buffer.isBuffer(item)) {
         const a = bufferToString(item);
+        // eslint-disable-next-line no-control-regex
         const re = /[\x00-\x1F\x7F-\xFF]/.test(a) ? bufferToHex(item) : a;
         return re;
       } else if (Array.isArray(item)) {
         return item.map((subItem) => {
           return Buffer.isBuffer(subItem)
-            ? /[\x00-\x1F\x7F-\xFF]/.test(bufferToString(subItem))
+            ? // eslint-disable-next-line no-control-regex
+              /[\x00-\x1F\x7F-\xFF]/.test(bufferToString(subItem))
               ? bufferToHex(subItem)
               : bufferToString(subItem)
             : subItem;
@@ -315,12 +316,14 @@ async function sendSignedTxEvm(
   method,
   value = null,
   simulate = false,
+  customTxParams = {},
   ...params
 ) {
   try {
     const txParams = {
       gasPrice: ethers.parseUnits("50", "gwei"),
       gasLimit: 10000000,
+      ...customTxParams,
     };
 
     if (value != null) {
@@ -354,18 +357,30 @@ async function sendSignedTxEvm(
   }
 }
 
-async function depositNativeEvm(amount, to, data, value, simulate = false) {
+async function depositNativeEvm(
+  amount,
+  to,
+  data,
+  value,
+  simulate = false,
+  contractObject = null,
+  customTxParams = {},
+) {
   try {
-    const contract = getContractObjectEvm(
-      config.abi.assetManager,
-      config.network.evm1[config.useNetwork].contracts.asset_manager,
-    );
+    const contract =
+      contractObject === null
+        ? getContractObjectEvm(
+            config.abi.assetManager,
+            config.network.evm1[config.useNetwork].contracts.asset_manager,
+          )
+        : contractObject;
 
     return await sendSignedTxEvm(
       contract,
       "depositNative(uint256,string,bytes)",
       value,
       simulate,
+      customTxParams,
       amount,
       to,
       data,
