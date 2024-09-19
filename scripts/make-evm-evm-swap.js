@@ -66,7 +66,7 @@ async function main() {
     // and ETH/bnUSD pool
     const pool1Data = await getPoolsStat("0x46");
     const pool2Data = await getPoolsStat("0x3b");
-    const pool1Price = parseInt(pool1Data.result.price, 16) / 10 ** 30;
+    const pool1Price = parseInt(pool1Data.result.price, 16) / 10 ** 18;
     const pool2Price = parseInt(pool2Data.result.price, 16) / 10 ** 18;
 
     const tokenBAmount = (amountRaw * pool1Price) / pool2Price;
