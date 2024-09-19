@@ -39,8 +39,8 @@ The following scripts are available:
 - [Make ICON-ICON swap (TOKEN to ICX)](./scripts/make-icon-icon-swap-3.js)
 - [Make ICON-SPOKE swap (ICX to NATIVE on SPOKE)](./scripts/make-icon-evm-swap.js)
 - [Make ICON-SPOKE swap (TOKEN on ICON to TOKEN on SPOKE)](./scripts/make-icon-evm-swap.js)
-- (NOT IMPLEMENTED YET)[Make SPOKE-ICON swap](./scripts/make-spoke-icon-swap.js)
-- (NOT IMPLEMENTED YET)[Make SPOKE-SPOKE swap](./scripts/make-spoke-spoke-swap.js)
+- [Make SPOKE-SPOKE swap (NATIVE coin on source chain)](./scripts/make-evm-evm-swap.js)
+- [Make SPOKE-SPOKE swap (TOKEN on source chain)](./scripts/make-evm-evm-swap-2.js)
 
 
 ## References
