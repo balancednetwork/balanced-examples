@@ -1,7 +1,7 @@
 // This script showcase how to make a swap on Balanced
 // Network.
-// The example is for a swap from ICX (native) on ICON
-// Chain to AVAX (native) on Avalanche Chain.
+// The example is for a swap from AVAX on avalanche
+// Chain to ETH on BASE chain.
 //
 const config = require("../utils/config");
 const { Web3 } = require("web3");
@@ -35,7 +35,7 @@ async function main() {
 
     // get fee for cross chain transfer using xcall
     const response = await xcallContract["getFee(string,bool,string[])"](
-      config.network.evm2[config.useNetwork].xnid,
+      config.network.evm1[config.useNetwork].xnid,
       "0x1",
       sources,
     );
@@ -49,12 +49,12 @@ async function main() {
     const evmWallet = evmProvider.eth.accounts.privateKeyToAccount(
       "0x" + config.privateKey,
     );
-    const receiver = `${config.network.evm2[config.useNetwork].xnid}/${evmWallet.address}`;
+    const receiver = `${config.network.evm3[config.useNetwork].xnid}/${evmWallet.address}`;
 
     // amount to trade
-    const amountRaw = 0.01;
+    const amountRaw = 0.1;
     let amount = amountRaw + parsedFee;
-    amount = Number(amount.toFixed(4));
+    amount = Number(amount.toFixed(8));
 
     const parsedAmountRaw = parseInt(amountRaw * 10 ** 18);
     const parsedAmount = parseInt(amount * 10 ** 18);
@@ -63,10 +63,10 @@ async function main() {
     const slippage = 0.02;
 
     // fetch the current price for the AVAX/bnUSD pool
-    // and BNB/bnUSD pool
+    // and ETH/bnUSD pool
     const pool1Data = await getPoolsStat("0x46");
-    const pool2Data = await getPoolsStat("0x47");
-    const pool1Price = parseInt(pool1Data.result.price, 16) / 10 ** 18;
+    const pool2Data = await getPoolsStat("0x3b");
+    const pool1Price = parseInt(pool1Data.result.price, 16) / 10 ** 30;
     const pool2Price = parseInt(pool2Data.result.price, 16) / 10 ** 18;
 
     const tokenBAmount = (amountRaw * pool1Price) / pool2Price;
