@@ -100,6 +100,7 @@ const config = {
           asset_manager: "0xDccd213951D8214fBACa720728474E2cEf9d247B",
           xcall: "0x7fdde482956770D148E055f9d2893f84a1B6B00B",
           xcall_manager: "0xbcbd42Ab3c9d219b9c992Cc984DD2a77AfD95EF3",
+          usdc: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         },
       },
       testnet: {

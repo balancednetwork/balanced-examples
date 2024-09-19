@@ -357,6 +357,42 @@ async function sendSignedTxEvm(
   }
 }
 
+async function depositTokenEvm(
+  address,
+  amount,
+  to,
+  data,
+  networkFee,
+  simulate = false,
+  contractObject = null,
+  customTxParams = {},
+) {
+  try {
+    const contract =
+      contractObject === null
+        ? getContractObjectEvm(
+            config.abi.assetManager,
+            config.network.evm1[config.useNetwork].contracts.asset_manager,
+          )
+        : contractObject;
+
+    return await sendSignedTxEvm(
+      contract,
+      "deposit(address,uint256,string,bytes)",
+      networkFee,
+      simulate,
+      customTxParams,
+      address,
+      amount,
+      to,
+      data,
+    );
+  } catch (err) {
+    console.log("Error invoking deposit method on EVM chain:");
+    console.log(err);
+    throw new Error("Error invoking deposit method on EVM chain");
+  }
+}
 async function depositNativeEvm(
   amount,
   to,
@@ -418,5 +454,6 @@ module.exports = {
   getContractObjectEvm,
   sendSignedTxEvm,
   depositNativeEvm,
+  depositTokenEvm,
   getMethodSignaturesFromAbi,
 };
