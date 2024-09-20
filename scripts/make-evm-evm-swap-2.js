@@ -84,7 +84,7 @@ async function main() {
       "_swap",
       receiver,
       minTokenBAmountInLoop,
-      [1, pool1Data.result.quote_token],
+      [2, pool1Data.result.quote_token],
       [1, pool2Data.result.base_token],
     ];
 
