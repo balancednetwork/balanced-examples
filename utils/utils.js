@@ -131,6 +131,23 @@ async function getPoolsStat(id) {
   }
 }
 
+async function getAssets() {
+  try {
+    const data = getJsonRpcData(
+      config.network.icon[config.useNetwork].contracts.asset_manager,
+      "getAssets",
+    );
+    const response = await customAxiosRequest(data);
+    if (response.error) {
+      throw new Error(JSON.stringify(response.error));
+    }
+    return response;
+  } catch (err) {
+    console.log("error running getAssets");
+    console.log(err);
+  }
+}
+
 async function customAxiosRequest(data) {
   try {
     console.log("Request:");
@@ -443,17 +460,18 @@ function getMethodSignaturesFromAbi(abi) {
 }
 
 module.exports = {
-  getPoolsStat,
-  encodePathArray,
-  icxTransaction,
-  getTxResult,
   decodeRlpEncodedSwapData,
-  getRlpEncodedSwapData,
-  getNonce,
-  getTokenSymbol,
-  getContractObjectEvm,
-  sendSignedTxEvm,
   depositNativeEvm,
   depositTokenEvm,
+  encodePathArray,
+  getAssets,
+  getContractObjectEvm,
   getMethodSignaturesFromAbi,
+  getNonce,
+  getPoolsStat,
+  getRlpEncodedSwapData,
+  getTokenSymbol,
+  getTxResult,
+  icxTransaction,
+  sendSignedTxEvm,
 };
