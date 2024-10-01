@@ -1,14 +1,14 @@
-# Balanced Network Examples
+# Balanced Examples
 
-This repo is a collection of code samples to showcase how to execute different operations on the Balanced Network.
+This repo is a collection of code samples to showcase how to execute different operations on Balanced.
 
 ## Prerequisites
 
 To be able to run the code samples, first clone the repo and then install the required dependencies:
 
 ```bash
-git clone https://github.com/balancednetwork/balanced-network-examples.git
-cd balanced-network-examples
+git clone https://github.com/balancednetwork/balanced-examples.git
+cd balanced-examples
 npm install
 ```
 
@@ -44,7 +44,8 @@ The following scripts are available:
 
 
 ## References
-- [Balanced Network](https://balanced.network/)
-- [Balanced Network Docs](https://docs.balanced.network/)
-- [Balanced Network Contracts Addresses](https://github.com/balancednetwork/balanced-java-contracts/wiki/Contract-Addresses)
-- [xCall Contracts Addresses](https://github.com/icon-project/xcall-multi/wiki/xCall-Deployment-Info)
+- [Balanced website](https://balanced.network/)
+- [Balanced app](https://app.balanced.network/)
+- [Balanced docs](https://docs.balanced.network/)
+- [Balanced contract addresses](https://github.com/balancednetwork/balanced-java-contracts/wiki/Contract-Addresses)
+- [xCall contract addresses](https://github.com/icon-project/xcall-multi/wiki/xCall-Deployment-Info)
